@@ -1,0 +1,108 @@
+<section class="configuration">
+  <app-error-state
+    *ngIf="error() as err"
+    title="Configuration unavailable"
+    [message]="err.message || 'Unable to load configuration.'"
+    [retry]="retry"
+  ></app-error-state>
+
+  <app-loading-state
+    *ngIf="isLoading()"
+    title="Loading workspace settings"
+    message="Fetching the latest configuration."
+  ></app-loading-state>
+
+  <ui-card dataTestId="configuration-card" *ngIf="!isLoading() && !error()">
+    <form class="card-content" (ngSubmit)="onSubmit()">
+      <h2>Workspace Settings</h2>
+      <p class="helper">Configure defaults for dashboards, alerts, and automation thresholds.</p>
+
+      <div class="field">
+        <ui-input
+          label="Site name"
+          [value]="controls.siteName.value"
+          (valueChange)="handleSiteNameChange($event)"
+          dataTestId="site-name"
+        ></ui-input>
+        <div class="field-error" *ngIf="showError('siteName')">
+          {{ getErrorMessage('siteName') }}
+        </div>
+      </div>
+
+      <div class="field">
+        <ui-select
+          label="Language"
+          [options]="languageOptions"
+          [value]="controls.language.value"
+          (valueChange)="handleLanguageChange($event)"
+          dataTestId="language-select"
+        ></ui-select>
+        <div class="field-error" *ngIf="showError('language')">
+          {{ getErrorMessage('language') }}
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="field">
+        <ui-input
+          label="Refresh interval (minutes)"
+          type="number"
+          [min]="5"
+          [max]="300"
+          [value]="controls.refreshInterval.value"
+          (valueChange)="updateNumberControl('refreshInterval', $event, 5)"
+          dataTestId="refresh-interval"
+        ></ui-input>
+          <div class="field-error" *ngIf="showError('refreshInterval')">
+            {{ getErrorMessage('refreshInterval') }}
+          </div>
+        </div>
+
+        <div class="field">
+        <ui-input
+          label="Alert threshold (%)"
+          type="number"
+          [min]="0"
+          [max]="100"
+          [step]="1"
+          [value]="controls.threshold.value"
+          (valueChange)="updateNumberControl('threshold', $event, 0)"
+          dataTestId="threshold"
+        ></ui-input>
+          <div class="field-error" *ngIf="showError('threshold')">
+            {{ getErrorMessage('threshold') }}
+          </div>
+        </div>
+      </div>
+
+      <ui-switch
+        label="Enable alerts"
+        description="Send notifications when KPI scores drop below the threshold."
+        [checked]="controls.enableAlerts.value"
+        (checkedChange)="updateControl('enableAlerts', $event)"
+        dataTestId="enable-alerts"
+      ></ui-switch>
+
+      <div class="actions">
+        <ui-button
+          variant="text"
+          (pressed)="cancel()"
+          [disabled]="isLoading() || isSaving()"
+          dataTestId="cancel-settings"
+        >
+          Cancel
+        </ui-button>
+
+        <ui-button
+          color="primary"
+          variant="flat"
+          type="submit"
+          [disabled]="isSaveDisabled()"
+          dataTestId="save-settings"
+        >
+          Save changes
+        </ui-button>
+      </div>
+    </form>
+  </ui-card>
+</section>

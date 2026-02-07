@@ -1,0 +1,27 @@
+:host {
+  display: inline-block;
+}
+
+.ui-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  text-transform: none;
+}
+
+.ui-button__icon {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.ui-button__icon.trailing {
+  order: 2;
+}
+
+.ui-button__content {
+  display: inline-flex;
+  align-items: center;
+}

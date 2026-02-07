@@ -1,0 +1,38 @@
+:host {
+  display: block;
+}
+
+.ui-table {
+  width: 100%;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.align-end {
+  text-align: right;
+}
+
+.align-center {
+  text-align: center;
+}
+
+th.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.sort-icon {
+  font-size: 16px;
+  margin-left: 0.25rem;
+  vertical-align: middle;
+}
+
+.ui-table__row-selectable {
+  cursor: pointer;
+}
+
+.ui-table__empty {
+  padding: 1rem;
+  text-align: center;
+  color: #94a3b8;
+}

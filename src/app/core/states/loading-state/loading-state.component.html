@@ -1,0 +1,10 @@
+<div class="loading-state">
+  <div class="loading-state__text">
+    <h3>{{ title }}</h3>
+    <p>{{ message }}</p>
+  </div>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  <div class="loading-state__skeletons">
+    <div class="skeleton" *ngFor="let _ of placeholderArray"></div>
+  </div>
+</div>

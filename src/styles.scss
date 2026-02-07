@@ -1,1 +1,40 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+$enterprise-ops-theme: mat.define-theme();
+
+:root {
+  @include mat.all-component-themes($enterprise-ops-theme);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', 'Roboto', 'Helvetica Neue', sans-serif;
+  background-color: mat.get-theme-color($enterprise-ops-theme, neutral, 96);
+  color: mat.get-theme-color($enterprise-ops-theme, neutral, 10);
+}
+
+.app-shell__sidenav {
+  width: 260px;
+}
+
+.app-shell__content {
+  min-height: calc(100vh - 64px);
+  padding: 1.5rem;
+  background: mat.get-theme-color($enterprise-ops-theme, neutral, 98);
+}
+
+.mat-toolbar {
+  font-weight: 500;
+}
+
+.ui-toast--success {
+  background: #14532d;
+  color: #f0fdf4;
+}

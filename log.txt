@@ -1,0 +1,29 @@
+
+> enterprise-ops-dashboard-ng@0.1.0 start
+> ng serve
+
+❯ Building...
+✔ Building...
+Initial chunk files | Names                    |  Raw size
+styles.css          | styles                   |  57.70 kB | 
+main.js             | main                     |  14.79 kB | 
+chunk-VUJOFXKG.js   | -                        | 938 bytes | 
+polyfills.js        | polyfills                |  95 bytes | 
+
+                    | Initial total            |  73.52 kB
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-J6BCMTUP.js   | table-view-component     |  47.34 kB | 
+chunk-KQOGRTRU.js   | configuration-component  |  32.81 kB | 
+chunk-HKEBWBZE.js   | -                        |  32.30 kB | 
+chunk-A76DRHYR.js   | dashboard-page-component |  28.51 kB | 
+chunk-SN7JJMWT.js   | -                        |  25.35 kB | 
+chunk-QTIJYZU7.js   | -                        |  14.47 kB | 
+chunk-REMXOX34.js   | -                        |   3.65 kB | 
+
+Application bundle generation complete. [2.111 seconds] - 2026-02-07T09:06:59.714Z
+
+Watch mode enabled. Watching for file changes...
+NOTE: Raw file sizes do not reflect development server per-request transformations.
+  ➜  Local:   http://localhost:4200/
+  ➜  press h + enter to show help

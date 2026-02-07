@@ -1,0 +1,13 @@
+<mat-slide-toggle
+  class="ui-switch"
+  [checked]="checked"
+  [disabled]="disabled"
+  [attr.data-testid]="dataTestId ?? null"
+  [attr.aria-label]="ariaLabel ?? label"
+  (change)="onToggle($event.checked)"
+>
+  <span class="ui-switch__content">
+    <span class="ui-switch__label">{{ label }}</span>
+    <span class="ui-switch__description" *ngIf="description">{{ description }}</span>
+  </span>
+</mat-slide-toggle>

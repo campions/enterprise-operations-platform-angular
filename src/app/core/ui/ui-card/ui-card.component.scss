@@ -1,0 +1,12 @@
+:host {
+  display: block;
+}
+
+.ui-card {
+  width: 100%;
+}
+
+.ui-card--outlined {
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  box-shadow: none;
+}

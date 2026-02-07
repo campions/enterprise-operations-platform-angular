@@ -1,0 +1,171 @@
+<section class="table-view">
+  <header class="table-view__header">
+    <div class="table-view__headline">
+      <h2>Operational Tables</h2>
+      <p>{{ totalRows() }} assets • Avg score {{ averageScore() | number: '1.0-1' }}</p>
+    </div>
+    <div class="table-view__actions">
+      <ui-input
+        label="Filter"
+        placeholder="Search name, location, or status"
+        [value]="tableState.filterText()"
+        (valueChange)="onFilterChange($event)"
+        dataTestId="table-filter"
+      ></ui-input>
+      <ui-button variant="raised" color="primary" leadingIcon="add" dataTestId="create-table-button">
+        New table
+      </ui-button>
+    </div>
+  </header>
+
+  <app-error-state
+    *ngIf="rowsState.error() as err"
+    title="Equipment data unavailable"
+    [message]="err.message || 'Unable to load equipment data.'"
+    [retry]="rowsState.reload"
+  ></app-error-state>
+
+  <app-loading-state
+    *ngIf="rowsState.loading()"
+    title="Loading tables"
+    message="Syncing the latest operational assets."
+  ></app-loading-state>
+
+  <app-empty-state
+    *ngIf="!rowsState.loading() && !rowsState.error() && totalRows() === 0"
+    title="No data sources"
+    message="Connect a data source or adjust filters to see assets."
+    icon="table_rows"
+  ></app-empty-state>
+
+  <ng-container *ngIf="!rowsState.loading() && !rowsState.error() && totalRows()">
+    <ui-table
+      [dataSource]="pagedRows()"
+      [columns]="columns"
+      [sortKey]="tableState.sortKey()"
+      [sortDir]="tableState.sortDir()"
+      (sortChange)="onSortChange($event)"
+      [rowTestIdFn]="rowTestId"
+      dataTestId="table-view-grid"
+      emptyState="No data sources configured"
+    >
+      <ng-template uiTableCell="score" let-row>
+        {{ row.score | number: '1.0-1' }}
+      </ng-template>
+
+      <ng-template uiTableCell="updatedAt" let-row>
+        {{ row.updatedAt | date: 'short' }}
+      </ng-template>
+
+      <ng-template uiTableCell="status" let-row>
+        <span class="status" [ngClass]="row.status">{{ row.status | titlecase }}</span>
+      </ng-template>
+
+      <ng-template uiTableCell="actions" let-row>
+        <div class="table-actions">
+          <ui-button variant="text" (pressed)="openView(row)" [dataTestId]="'view-row-btn-' + row.id">View</ui-button>
+          <ui-button
+            variant="text"
+            color="primary"
+            (pressed)="openEdit(row)"
+            [dataTestId]="'edit-row-btn-' + row.id"
+          >
+            Edit
+          </ui-button>
+        </div>
+      </ng-template>
+    </ui-table>
+
+    <div class="table-view__pagination">
+      <span class="pagination-range">{{ rangeLabel() }}</span>
+      <ui-select
+        label="Rows per page"
+        [options]="pageSizeSelectOptions"
+        [value]="tableState.pageSize()"
+        (valueChange)="onPageSizeChange($event)"
+        dataTestId="page-size-select"
+      ></ui-select>
+      <div class="pagination-buttons">
+        <ui-button
+          variant="text"
+          (pressed)="changePage(-1)"
+          [disabled]="!canGoPrevious()"
+          dataTestId="page-prev"
+        >
+          Previous
+        </ui-button>
+        <ui-button
+          variant="text"
+          (pressed)="changePage(1)"
+          [disabled]="!canGoNext()"
+          dataTestId="page-next"
+        >
+          Next
+        </ui-button>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #viewRowTemplate let-row="row">
+    <div class="modal-section">
+      <div class="modal-field">
+        <span>Asset ID</span>
+        <strong>{{ row.id }}</strong>
+      </div>
+      <div class="modal-field">
+        <span>Status</span>
+        <strong class="status" [ngClass]="row.status">{{ row.status | titlecase }}</strong>
+      </div>
+      <div class="modal-field">
+        <span>Location</span>
+        <strong>{{ row.location }}</strong>
+      </div>
+      <div class="modal-field">
+        <span>Last Updated</span>
+        <strong>{{ row.updatedAt | date: 'full' }}</strong>
+      </div>
+      <div class="modal-field">
+        <span>Score</span>
+        <strong>{{ row.score | number: '1.0-1' }}</strong>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template
+    #editRowTemplate
+    let-row="row"
+    let-draft="draft"
+    let-updateName="updateName"
+    let-updateStatus="updateStatus"
+    let-updateScore="updateScore"
+    let-statusOptions="statusOptions"
+  >
+    <div class="modal-section">
+      <ui-input
+        label="Asset name"
+        [value]="draft()?.name"
+        (valueChange)="updateName($event)"
+        dataTestId="edit-name-input"
+      ></ui-input>
+
+      <ui-select
+        label="Status"
+        [options]="statusOptions"
+        [value]="draft()?.status"
+        (valueChange)="updateStatus($event)"
+        dataTestId="edit-status-select"
+      ></ui-select>
+
+      <ui-input
+        label="Score"
+        type="number"
+        [min]="0"
+        [max]="100"
+        [step]="0.1"
+        [value]="draft()?.score"
+        (valueChange)="updateScore($event)"
+        dataTestId="edit-score-input"
+      ></ui-input>
+    </div>
+  </ng-template>
+</section>

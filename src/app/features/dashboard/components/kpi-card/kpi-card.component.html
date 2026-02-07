@@ -1,0 +1,10 @@
+<ui-card class="kpi-card" [dataTestId]="'kpi-' + metric.id">
+  <div class="kpi-card__label">{{ metric.label }}</div>
+  <div class="kpi-card__value">
+    {{ formattedValue }}<span *ngIf="metric.unit" class="kpi-card__unit">{{ metric.unit }}</span>
+  </div>
+  <div class="kpi-card__delta" *ngIf="hasDelta" [class.negative]="(metric.delta ?? 0) < 0">
+    <span>{{ deltaLabel }}</span>
+    <span>vs. last period</span>
+  </div>
+</ui-card>

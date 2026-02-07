@@ -1,0 +1,39 @@
+.kpi-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.kpi-card__label {
+  margin: 0;
+  color: #475569;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.kpi-card__value {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.kpi-card__unit {
+  font-size: 1rem;
+  margin-left: 0.25rem;
+  color: #64748b;
+}
+
+.kpi-card__delta {
+  font-size: 0.9rem;
+  color: #16a34a;
+}
+
+.kpi-card__delta.negative {
+  color: #dc2626;
+}
+
+.kpi-card__delta span:last-child {
+  margin-left: 0.25rem;
+  color: #94a3b8;
+}

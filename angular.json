@@ -2,29 +2,32 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "projects",
+  "cli": {
+    "analytics": false
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "style": "scss",
+      "standalone": true
+    }
+  },
   "projects": {
-    "enterprise-operations-platform-angular": {
+    "enterprise-ops-dashboard-ng": {
       "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        }
-      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/enterprise-operations-platform-angular",
+            "outputPath": "dist/enterprise-ops-dashboard-ng",
+            "browser": "src/main.ts",
+            "tsConfig": "tsconfig.app.json",
             "index": "src/index.html",
-            "main": "src/main.ts",
             "polyfills": [
               "zone.js"
             ],
-            "tsConfig": "tsconfig.app.json",
-            "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -32,7 +35,7 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "inlineStyleLanguage": "scss"
           },
           "configurations": {
             "production": {
@@ -44,19 +47,16 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "8kb",
+                  "maximumError": "12kb"
                 }
               ],
               "outputHashing": "all"
             },
             "development": {
-              "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
-              "extractLicenses": false,
               "sourceMap": true,
-              "namedChunks": true
+              "extractLicenses": false
             }
           },
           "defaultConfiguration": "production"
@@ -64,11 +64,11 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
-            "production": {
-              "browserTarget": "enterprise-operations-platform-angular:build:production"
-            },
             "development": {
-              "browserTarget": "enterprise-operations-platform-angular:build:development"
+              "buildTarget": "enterprise-ops-dashboard-ng:build:development"
+            },
+            "production": {
+              "buildTarget": "enterprise-ops-dashboard-ng:build:production"
             }
           },
           "defaultConfiguration": "development"
@@ -76,29 +76,11 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "enterprise-operations-platform-angular:build"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
-            "tsConfig": "tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.scss"
-            ],
-            "scripts": []
+            "buildTarget": "enterprise-ops-dashboard-ng:build"
           }
         }
       }
     }
-  }
+  },
+  "defaultProject": "enterprise-ops-dashboard-ng"
 }

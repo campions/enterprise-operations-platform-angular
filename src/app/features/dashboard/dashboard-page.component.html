@@ -1,0 +1,96 @@
+<section class="dashboard-page">
+  <header class="dashboard-page__header">
+    <div>
+      <p class="eyebrow">Enterprise Ops</p>
+      <h1>Operations Dashboard</h1>
+      <p class="subtitle">Monitor KPIs and equipment updates at a glance.</p>
+    </div>
+  </header>
+
+  <app-error-state
+    *ngIf="kpiState.error() as err"
+    title="KPI data unavailable"
+    [message]="err.message || 'Unable to load KPIs right now.'"
+    [retry]="kpiState.reload"
+  ></app-error-state>
+
+  <app-loading-state
+    *ngIf="kpiState.loading()"
+    title="Loading KPI metrics"
+    message="Fetching the latest performance indicators."
+  ></app-loading-state>
+
+  <div class="kpi-grid" *ngIf="!kpiState.loading() && !kpiState.error()">
+    <app-kpi-card *ngFor="let metric of kpis(); trackBy: trackKpi" [metric]="metric"></app-kpi-card>
+  </div>
+
+  <section class="updates">
+    <div class="updates__header">
+      <div>
+        <h2>Recent Updates</h2>
+        <p>Latest changes across monitored equipment.</p>
+      </div>
+      <div class="pagination" *ngIf="!equipmentState.loading() && !equipmentState.error() && pagedRows().length">
+        <span>Page {{ pageIndex() + 1 }} of {{ totalPages() }}</span>
+        <div class="pagination__actions">
+          <ui-button
+            variant="stroked"
+            (pressed)="prevPage()"
+            [disabled]="pageIndex() === 0"
+            dataTestId="prev-page"
+          >
+            Previous
+          </ui-button>
+          <ui-button
+            variant="stroked"
+            (pressed)="nextPage()"
+            [disabled]="pageIndex() >= totalPages() - 1"
+            dataTestId="next-page"
+          >
+            Next
+          </ui-button>
+        </div>
+      </div>
+    </div>
+
+    <app-error-state
+      *ngIf="equipmentState.error() as err"
+      title="Equipment data unavailable"
+      [message]="err.message || 'Unable to load equipment rows.'"
+      [retry]="equipmentState.reload"
+    ></app-error-state>
+
+    <app-loading-state
+      *ngIf="equipmentState.loading()"
+      title="Loading updates"
+      message="Syncing recent equipment health signals."
+    ></app-loading-state>
+
+    <app-empty-state
+      *ngIf="!equipmentState.loading() && !equipmentState.error() && pagedRows().length === 0"
+      title="No recent updates"
+      message="All equipment feeds are quiet for now."
+      icon="table_rows"
+    ></app-empty-state>
+
+    <ui-table
+      *ngIf="!equipmentState.loading() && !equipmentState.error() && pagedRows().length"
+      [dataSource]="pagedRows()"
+      [columns]="columns"
+      [rowTestIdFn]="recentRowTestId"
+      dataTestId="recent-updates-table"
+    >
+      <ng-template uiTableCell="updatedAt" let-row>
+        {{ row.updatedAt | date: 'short' }}
+      </ng-template>
+
+      <ng-template uiTableCell="status" let-row>
+        <span class="status" [ngClass]="row.status">{{ row.status }}</span>
+      </ng-template>
+
+      <ng-template uiTableCell="score" let-row>
+        {{ row.score | number: '1.0-1' }}
+      </ng-template>
+    </ui-table>
+  </section>
+</section>

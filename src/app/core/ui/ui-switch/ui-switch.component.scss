@@ -1,0 +1,22 @@
+:host {
+  display: block;
+}
+
+.ui-switch {
+  width: 100%;
+}
+
+.ui-switch__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.ui-switch__label {
+  font-weight: 600;
+}
+
+.ui-switch__description {
+  font-size: 0.85rem;
+  color: #94a3b8;
+}

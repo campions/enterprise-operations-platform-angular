@@ -1,0 +1,19 @@
+<div class="error-state">
+  <div class="error-state__text">
+    <span class="material-icons" aria-hidden="true">error_outline</span>
+    <div>
+      <h3>{{ title }}</h3>
+      <p>{{ message }}</p>
+    </div>
+  </div>
+  <ng-container *ngIf="retry as retryFn">
+    <ui-button
+      variant="stroked"
+      color="primary"
+      (pressed)="retryFn()"
+      dataTestId="error-retry"
+    >
+      Retry
+    </ui-button>
+  </ng-container>
+</div>
